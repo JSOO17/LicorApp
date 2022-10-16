@@ -1,5 +1,5 @@
-import ProductServices from "../../services/productServices"
-import ProductRepository from "repositories/productRepository"
+import ProductServices from "../../services/ProductServices"
+import ProductRepository from "repositories/ProductRepository"
 import * as sinon from "ts-sinon"
 import { ProductModel } from "../../models/Product"
 

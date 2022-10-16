@@ -2,7 +2,7 @@ import { IProductRepository } from "interfaces/IRepository"
 import NotFoundError from "../libs/errors/NotFoundError"
 import { autoInjectable } from "tsyringe"
 import Product from "../models/Product"
-import { Product as ProductModel } from "../models/Product"
+import { ProductModel } from "../models/Product"
 import { UpdateOptions } from "sequelize"
 import Brand from "../models/Brand"
 

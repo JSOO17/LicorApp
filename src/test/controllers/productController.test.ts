@@ -1,34 +1,46 @@
 
 import request from "supertest"
-import ProductServices from "../../services/productServices"
-import Product, { ProductModel } from '../../models/Product'
+import ProductServices from "../../services/ProductServices"
+import Product, { ProductModel } from "../../models/Product"
+import { Request, Response } from "express"
 import Server from '../../server'
+import sinon from "ts-sinon"
+import ProductController from "../../controllers/ProductController"
 
 describe('tests product controller', () => {
+
+   let status, json, res: Response, productServices;
+    beforeEach(() => {
+      status = sinon.stub()
+      json = sinon.spy()
+      status.returns(res)
+    });
+
+
    it('get products successfull', async () => {
-      const products = [
-         {
-            id: 212,
-            name: "product 1",
-            description: "description product",
-            price: 123.3,
-            createdAt: new Date(),
-            updatedAt: new Date()
-         }
-      ]
 
-      const mockFindAll = jest.fn((): Promise<ProductModel[]> => new Promise(() => products as ProductModel[]))
+      const req = { body: { } } as Request;
 
-      jest
-      .spyOn(Product, 'findAll')
-      .mockImplementation(() => mockFindAll())
+      const productService = sinon.createStubInstance(ProductServices)
 
-      var server = new Server()
+      const mockGetProducts = async () => {
+         return [
+            {
+               id: 212,
+               name: "product 1",
+               description: "description product",
+               price: 123.3
+            }
+         ] as ProductModel[]
+      }
 
-      const res = await request(server.app).get("api/products").send()
-      
-      expect(res.body[0].name).toEqual("product 1")
-      expect(res.statusCode).toEqual(200)
+      productService.getProducts.returns(mockGetProducts())
+
+      const productController = new ProductController(productService as unknown as ProductServices)
+
+      const result = await productController.getProducts(req, res as Response)
+
+      expect(result.json.name).toEqual("product 1")
    })
 
    it('get a product successfull', async () => {
@@ -49,9 +61,9 @@ describe('tests product controller', () => {
 
       var server = new Server()
 
-      const res = await request(server.app).get("api/products/212").send()
+      const result = await request(server.app).get("api/products/212").send()
       
-      expect(res.body[0].name).toEqual("product 1")
-      expect(res.statusCode).toEqual(200)
+      expect(result.body[0].name).toEqual("product 1")
+      expect(result.statusCode).toEqual(200)
    })
 })

@@ -1,7 +1,5 @@
 import db from '../database/connection'
 import { DataTypes as type, InferAttributes, InferCreationAttributes, Model, ModelAttributeColumnOptions, ModelAttributes } from 'sequelize'
-import ProductModel, { Product } from './Product'
-
 
 export class Brand extends Model<
   InferAttributes<Brand>,

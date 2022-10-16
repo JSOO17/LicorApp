@@ -1,8 +1,10 @@
 import express, { Application, json } from 'express'
 import { container } from 'tsyringe'
 import ProductController from './controllers/ProductController'
+import OrderController from './controllers/OrderController'
 import db from './database/connection'
-import './models/index'
+import initRelations from './models'
+
 import morgan from 'morgan'
 
 class Server {
@@ -27,6 +29,9 @@ class Server {
    private injectControllers() {
       const productController = container.resolve(ProductController)
       this.app.use('/api/product', productController.routes())
+
+      const orderController = container.resolve(OrderController)
+      this.app.use('/api/order', orderController.routes())
    }
 
    private routes() {
@@ -41,6 +46,8 @@ class Server {
    private async connectDatabase() {
       try {
         await db.authenticate();
+
+        initRelations()
       } catch (error: any) {
         console.log(`Database connection error: ${error.message}`)
       }

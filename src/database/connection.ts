@@ -7,6 +7,12 @@ const options: Options = {
    dialect: 'mysql',
    host: process.env.DB_HOST || 'localhost',
    port: 3306,
+   pool: {
+    max: 100,
+    min: 0,
+    idle: 200000,
+    acquire: 1000000,
+  }
  }
 
 const sequelize = new Sequelize(options)

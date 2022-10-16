@@ -1,6 +1,6 @@
-import ProductRepository from "../repositories/productRepository";
+import ProductRepository from "../repositories/ProductRepository";
 import { autoInjectable } from "tsyringe"
-import { Product as ProductModel } from "../models/Product"
+import { ProductModel } from "../models/Product"
 
 @autoInjectable()
 class ProductServices {

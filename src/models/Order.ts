@@ -9,6 +9,8 @@ export class Order extends Model<
    declare total: number
    declare dateDelivered: Date
    declare date: Date
+   declare comment: string
+   declare address: string
    declare createdAt: Date
    declare updatedAt: Date
    declare clientId: ForeignKey<number>
@@ -26,6 +28,8 @@ export default Order.init({
    date: type.DATE,
    createdAt: type.DATE,
    updatedAt: type.DATE,
+   comment: type.STRING(150),
+   address: type.STRING(100),
    clientId: {
       type: type.INTEGER,
       allowNull: false

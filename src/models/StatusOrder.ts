@@ -6,10 +6,8 @@ export class StatusOrder extends Model<
   InferCreationAttributes<StatusOrder>
 > {
    declare id: number
-   declare status: string
+   declare name: string
    declare description: string
-   declare createdAt: Date
-   declare updatedAt: Date
 }
 
 export default StatusOrder.init({
@@ -18,12 +16,11 @@ export default StatusOrder.init({
       primaryKey: true,
       autoIncrement: true
    },
-   status: type.CHAR,
+   name: type.CHAR,
    description: type.STRING,
-   createdAt: type.DATE,
-   updatedAt: type.DATE,
 }, {
    sequelize: db,
-   tableName: 'orders',
-   modelName: 'order'
+   tableName: 'statusOrder',
+   modelName: 'status',
+   timestamps: false
 })

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express"
-import { Product as ProductModel } from "../models/Product"
+import { ProductModel  } from "../models/Product"
 import { autoInjectable } from "tsyringe"
-import ProductServices from '../services/productServices'
+import ProductServices from '../services/ProductServices'
 import NotFoundError from "../libs/errors/NotFoundError"
 import { body, validationResult } from "express-validator"
 import { ValidationChain } from "express-validator/src/chain"
@@ -9,19 +9,21 @@ import BaseController from "./BaseController"
 
 @autoInjectable()
 export default class ProductController extends BaseController {
-   public productServices: ProductServices
-   private router: Router
+   private productServices: ProductServices
 
    constructor(productServices: ProductServices) {
-      super()
+      super(Router())
       this.productServices = productServices
-      this.router = Router()
    }
    
    getProducts = async (req: Request, res: Response) => {
-      const products = await this.productServices.getProducts()
+      try {
+         const products = await this.productServices.getProducts()
 
-      return res.status(200).json(products)
+         return res.status(200).json(products)
+      } catch (error) {
+         return res.status(500).json({ message: "internal error server" })
+      }
    }
 
    getProduct = async (req: Request, res: Response) => {
@@ -46,22 +48,26 @@ export default class ProductController extends BaseController {
 
    postProduct = async (req: Request, res: Response) => {
 
-      const errors = validationResult(req)
+      try {
+         const errors = validationResult(req)
 
-      if(!errors.isEmpty()){
-         let errorMessages: string[] = this.buildErrors(errors)
-
-         return res.status(400).json({ 
-            message: "required fields are not valid or are missing",
-            errors: errorMessages
-         })
+         if(!errors.isEmpty()){
+            let errorMessages: string[] = this.buildErrors(errors)
+   
+            return res.status(400).json({ 
+               message: "required fields are not valid or are missing",
+               errors: errorMessages
+            })
+         }
+   
+         const productModel = req.body as ProductModel
+   
+         const product = this.productServices.postProduct(productModel)
+   
+         return res.status(200).json({ message: "product was created", model: product })
+      } catch (error) {
+         return res.status(500).json({ message: "internal error server" })
       }
-
-      const productModel = req.body as ProductModel
-
-      const product = this.productServices.postProduct(productModel)
-
-      return res.status(200).json({ message: "product was created" })
    }
    
    updateProduct = async (req: Request, res: Response) => {

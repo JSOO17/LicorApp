@@ -1,9 +1,9 @@
 import db from '../database/connection'
 import { DataTypes as type, ForeignKey, InferAttributes, InferCreationAttributes, Model } from 'sequelize'
 
-export class Product extends Model<
-  InferAttributes<Product>,
-  InferCreationAttributes<Product>
+export class ProductModel extends Model<
+  InferAttributes<ProductModel>,
+  InferCreationAttributes<ProductModel>
 > {
    declare id: number
    declare name: string
@@ -14,7 +14,7 @@ export class Product extends Model<
    declare brandId: ForeignKey<number>
 }
 
-export default Product.init({
+export default ProductModel.init({
    id: {
       type: type.INTEGER,
       primaryKey: true,

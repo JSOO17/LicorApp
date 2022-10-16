@@ -1,6 +1,6 @@
 import "reflect-metadata"
-import ProductRepository from "../../repositories/productRepository"
-import Product, { ProductModel } from "../../models/Product"
+import ProductRepository from "../../repositories/ProductRepository"
+import { ProductModel } from "../../models/Product"
 
 describe('tests product services', () => {
    it('get products successfull', async () => {
@@ -16,7 +16,7 @@ describe('tests product services', () => {
       const mockFindAll = jest.fn((): Promise<ProductModel[]> => new Promise(() => productsMock as ProductModel[]))
 
       jest
-      .spyOn(Product, 'findAll')
+      .spyOn(ProductModel, 'findAll')
       .mockImplementation(() => mockFindAll())
 
       const productRepository = new ProductRepository()

@@ -40,7 +40,7 @@
   },
   "jest": {
     "preset": "ts-jest",
-    "testEnviroment": "node",
+    "testEnvironment": "node",
     "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.ts",
